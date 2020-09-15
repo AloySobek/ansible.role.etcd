@@ -1,0 +1,51 @@
+# File              : configure.yml
+# Author            : Rustam Khafizov <super.rustamm@gmail.com>
+# Date              : 10.09.2020
+# Last Modified Date: 15.09.2020
+# Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
+
+---
+- name: ensuring data directory exists
+  become: true
+  file:
+    path: "{{ data_dir }}"
+    state: directory
+    owner: root
+    mode: 0644
+
+- name: ensuring wal directory exists
+  become: true
+  file:
+    path: "{{ wal_dir }}"
+    state: directory
+    owner: root
+    mode: 0644
+
+- name: ensuring tls_keys directory exists
+  become: true
+  file:
+    path: "/etc/etcd/certs"
+    state: directory
+  when: tls
+
+- name: installing tls keys
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/etcd/certs"
+  loop:
+    - "{{ server_keys_path }}"
+    - "{{ client_keys_path }}"
+    - "{{ peer_keys_path }}"
+    - "{{ ca_cert_file }}"
+  when: tls
+
+- name: installing etcd.service
+  become: true
+  template:
+    src: etcd.service.j2
+    dest: "/lib/systemd/system/etcd.service"
+    owner: root
+    mode: 0644
+  notify:
+    - enable etcd

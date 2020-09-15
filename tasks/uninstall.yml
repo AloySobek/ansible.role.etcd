@@ -1,0 +1,31 @@
+# File              : uninstall.yml
+# Author            : Rustam Khafizov <super.rustamm@gmail.com>
+# Date              : 15.09.2020
+# Last Modified Date: 15.09.2020
+# Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
+
+---
+- name: removing golang
+  become: true
+  file:
+    path: "/usr/local/go"
+    state: absent
+
+- name: uninstalling etcd
+  become: true
+  apt:
+    name: etcd
+    state: absent
+
+- name: removing etcd directory
+  become: true
+  file:
+    path: "/var/lib/etcd"
+    state: absent
+  when: state == 'full_uninstall'
+
+- name: cleaning after uninstalling
+  become: true
+  apt:
+    autoremove: true
+    autoclean: true

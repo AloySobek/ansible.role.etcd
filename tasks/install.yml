@@ -1,0 +1,49 @@
+# File              : install.yml
+# Author            : Rustam Khafizov <super.rustamm@gmail.com>
+# Date              : 10.09.2020
+# Last Modified Date: 15.09.2020
+# Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
+
+---
+- name: updating before installation
+  become: true
+  apt:
+    update_cache: true
+    cache_valid_time: 0
+    force_apt_get: true
+    upgrade: dist
+
+- name: removing old golang
+  become: true
+  apt:
+    name: golang
+    state: absent
+
+- name: downloading golang
+  become: true
+  get_url:
+    url: "https://golang.org/dl/go{{ go_version }}.linux-amd64.tar.gz"
+    dest: "/tmp/golang.tar.gz"
+    owner: root
+    mode: 0444
+
+- name: installing golang
+  become: true
+  unarchive:
+    src: "/tmp/golang.tar.gz"
+    dest: "/usr/local"
+    mode: 0755
+    owner: root
+    remote_src: true
+
+- name: setting up golang
+  become: true
+  lineinfile:
+    path: "/etc/profile"
+    line: "export PATH=$PATH:/usr/local/go/bin"
+
+- name: installing etcd
+  become: true
+  apt:
+    name: etcd
+    state: latest

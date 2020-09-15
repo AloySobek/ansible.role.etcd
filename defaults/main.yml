@@ -1,0 +1,17 @@
+# File              : main.yml
+# Author            : Rustam Khafizov <super.rustamm@gmail.com>
+# Date              : 10.09.2020
+# Last Modified Date: 15.09.2020
+# Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
+
+---
+state: 'install'
+wal_dir: "/var/lib/etcd/wal"
+data_dir: "/var/lib/etcd/data"
+etcd_opts: false
+go_version: "1.15.2"
+tls: false
+server_keys_path:
+client_keys_path:
+peer_keys_path:
+ca_cert_file:
