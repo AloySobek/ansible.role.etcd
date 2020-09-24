@@ -1,7 +1,7 @@
 # File              : install.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 10.09.2020
-# Last Modified Date: 15.09.2020
+# Last Modified Date: 24.09.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
@@ -13,37 +13,39 @@
     force_apt_get: true
     upgrade: dist
 
-- name: removing old golang
+- name: removing apt package if installed
   become: true
   apt:
-    name: golang
+    name: etcd
     state: absent
+    autoremove: true
+    autoclean: true
 
-- name: downloading golang
+- name: downloading
   become: true
   get_url:
-    url: "https://golang.org/dl/go{{ go_version }}.linux-amd64.tar.gz"
-    dest: "/tmp/golang.tar.gz"
+    url: "https://github.com/etcd-io/etcd/releases/download/v{{ version }}/etcd-v{{ version }}-linux-amd64.tar.gz"
+    dest: "/tmp/etcd.tar.gz"
     owner: root
     mode: 0444
 
-- name: installing golang
+- name: unpacking
   become: true
   unarchive:
-    src: "/tmp/golang.tar.gz"
-    dest: "/usr/local"
+    src: "/tmp/etcd.tar.gz"
+    dest: "/tmp"
     mode: 0755
     owner: root
     remote_src: true
 
-- name: setting up golang
+- name: installing
   become: true
-  lineinfile:
-    path: "/etc/profile"
-    line: "export PATH=$PATH:/usr/local/go/bin"
-
-- name: installing etcd
-  become: true
-  apt:
-    name: etcd
-    state: latest
+  copy:
+    src: "/tmp/etcd-v{{ version }}-linux-amd64/{{ item }}"
+    dest: "/usr/bin"
+    mode: 0755
+    owner: root
+    remote_src: true
+  loop:
+    - etcd
+    - etcdctl 

@@ -1,7 +1,7 @@
 # File              : configure.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 10.09.2020
-# Last Modified Date: 15.09.2020
+# Last Modified Date: 24.09.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
@@ -21,30 +21,28 @@
     owner: root
     mode: 0644
 
-- name: ensuring tls_keys directory exists
+- name: ensuring certificates directory exists
   become: true
   file:
-    path: "/etc/etcd/certs"
+    path: "{{ remote_certs_location }}"
     state: directory
-  when: tls
 
-- name: installing tls keys
+- name: installing certificates
   become: true
   copy:
     src: "{{ item }}"
-    dest: "/etc/etcd/certs"
+    dest: "{{ remote_certs_location }}"
   loop:
-    - "{{ server_keys_path }}"
-    - "{{ client_keys_path }}"
-    - "{{ peer_keys_path }}"
-    - "{{ ca_cert_file }}"
-  when: tls
+    - "{{ local_ca_cert_file }}"
+    - "{{ local_client_keys_path }}"
+    - "{{ local_server_keys_path }}"
+    - "{{ local_peer_keys_path }}"
 
 - name: installing etcd.service
   become: true
   template:
     src: etcd.service.j2
-    dest: "/lib/systemd/system/etcd.service"
+    dest: "/etc/systemd/system/etcd.service"
     owner: root
     mode: 0644
   notify:

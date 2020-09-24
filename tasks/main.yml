@@ -1,7 +1,7 @@
 # File              : main.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 10.09.2020
-# Last Modified Date: 15.09.2020
+# Last Modified Date: 21.09.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
@@ -11,7 +11,7 @@
 
 - name: configuring...
   include_tasks: configure.yml
-  when: state == 'install' and etcd_opts
+  when: state == 'install'
 
 - name: uninstalling...
   include_tasks: uninstall.yml

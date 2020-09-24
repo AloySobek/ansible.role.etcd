@@ -1,17 +1,83 @@
 # File              : main.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 10.09.2020
-# Last Modified Date: 15.09.2020
+# Last Modified Date: 21.09.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
 state: 'install'
-wal_dir: "/var/lib/etcd/wal"
-data_dir: "/var/lib/etcd/data"
-etcd_opts: false
-go_version: "1.15.2"
-tls: false
-server_keys_path:
-client_keys_path:
-peer_keys_path:
-ca_cert_file:
+version: '3.3.25'
+
+# MEMBER FLAGS
+name:
+data_dir:
+wal_dir:
+snapshot_count:
+heartbeat_interval:
+election_timeout:
+initial_election_tick_advance:
+listen_peer_urls:
+listen_client_urls:
+max_snapshots:
+max_wals:
+cors:
+quota_backend_bytes:
+max_request_bytes:
+grpc_keepalive_min_time:
+grpc_keepalive_interval:
+grpc_keepalive_timeout:
+
+# CLUSTERING FLAGS
+initial_advertise_peer_urls:
+initial_cluster:
+initial_cluster_state:
+initial_cluster_token:
+advertise_client_urls:
+discovery:
+discovery_fallback:
+discovery_proxy:
+discovery_srv:
+strict_reconfig_check:
+auto_compaction_retention:
+enable_v2:
+
+# PROXY FLAGS
+proxy:
+proxy_failure_wait:
+proxy_refresh_interval:
+proxy_dial_timeout:
+proxy_write_timeout:
+proxy_read_timeout:
+
+# SECURITY FLAGS
+remote_certs_location:
+local_ca_cert_file:
+local_server_keys_path:
+local_client_keys_path:
+local_peer_keys_path:
+cert_file:
+key_file:
+client_cert_auth:
+trusted_ca_file:
+auto_tls:
+peer_cert_file:
+peer_key_file:
+peer_client_cert_auth:
+peer_trusted_ca_file:
+peer_auto_tls:
+cipher_suites:
+
+# LOGGING FLAGS
+debug:
+log_package_levels:
+log_output:
+
+# UNSAFE FLAGS
+force_new_cluster:
+
+# PROFILING FLAGS
+enable_pprof:
+metrics:
+
+# AUTH FLAGS
+auth_token:

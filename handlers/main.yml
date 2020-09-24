@@ -1,7 +1,7 @@
 # File              : main.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 15.09.2020
-# Last Modified Date: 15.09.2020
+# Last Modified Date: 24.09.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
@@ -11,3 +11,4 @@
     name: etcd
     state: started
     enabled: true
+    daemon_reload: true

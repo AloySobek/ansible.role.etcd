@@ -1,27 +1,35 @@
 # File              : uninstall.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 15.09.2020
-# Last Modified Date: 15.09.2020
+# Last Modified Date: 24.09.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
-- name: removing golang
+- name: stopping etcd daemon
   become: true
-  file:
-    path: "/usr/local/go"
-    state: absent
-
-- name: uninstalling etcd
-  become: true
-  apt:
+  service:
     name: etcd
-    state: absent
+    state: stopped
+    enabled: false
 
-- name: removing etcd directory
+- name: uninstalling
   become: true
   file:
-    path: "/var/lib/etcd"
+    path: "/usr/bin/{{ item }}"
     state: absent
+  loop:
+    - etcd
+    - etcdctl
+
+- name: removing data
+  become: true
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/var/lib/etcd"
+    - "/etc/etcd"
+    - "/etc/systemd/system/etcd.service"
   when: state == 'full_uninstall'
 
 - name: cleaning after uninstalling
