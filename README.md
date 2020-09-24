@@ -1,3 +1,8 @@
+ File              : README.md
+ Author            : Rustam Khafizov <super.rustamm@gmail.com>
+ Date              : 24.09.2020
+ Last Modified Date: 24.09.2020
+ Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 Role Name
 =========
 
@@ -19,6 +24,7 @@ Role Variables
 - local_server_keys_path: path where to get server cert and cert-key files
 - local_client_keys_path: path where to get client cert and cert-key files
 - local_peer_keys_path: path where to get peer (per host) cert and cert-key files
+- ALL etcd parameters: just etcd flags like if you type it in terminal
 
 Dependencies
 ------------
