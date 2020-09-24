@@ -1,8 +1,3 @@
- File              : README.md
- Author            : Rustam Khafizov <super.rustamm@gmail.com>
- Date              : 24.09.2020
- Last Modified Date: 24.09.2020
- Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 Role Name
 =========
 
