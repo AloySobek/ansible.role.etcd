@@ -1,7 +1,7 @@
 # File              : configure.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 10.09.2020
-# Last Modified Date: 24.09.2020
+# Last Modified Date: 26.09.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
@@ -37,6 +37,12 @@
     - "{{ local_client_keys_path }}"
     - "{{ local_server_keys_path }}"
     - "{{ local_peer_keys_path }}"
+
+- name: setting up etcd_3 client as default
+  become: true
+  lineinfile:
+    path: "/etc/environment"
+    line: "export ETCDCTL_API=3"
 
 - name: installing etcd.service
   become: true
