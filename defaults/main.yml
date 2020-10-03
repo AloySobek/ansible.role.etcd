@@ -1,7 +1,7 @@
 # File              : main.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 10.09.2020
-# Last Modified Date: 02.10.2020
+# Last Modified Date: 03.10.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
@@ -14,5 +14,5 @@ set_v3: true
 service_file: false
 remote_certs_dir: false
 local_ca_cert_file: false
-local_server_certs_dir: false
-local_peer_certs_dir: false
+local_server_certs_path: false
+local_peer_certs_path: false

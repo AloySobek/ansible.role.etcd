@@ -13,7 +13,13 @@ Role Variables
 
 - state: 'install', 'uninstall', 'full_uninstall'(removing etcd data)
 - version: version of etcd to download
-- etcd_args: just copy of etcd binary args, see example
+- necessary_dirs: this dirs will be created, default data and wal dirs for etcd
+- set_v3: set ETCDCTL_API env variable to use etcd_v3 as default
+- service_file: path to service file. This file describe how to start etcd
+- remote_certs_dir: path where certs lies on host machine
+- local_ca_cert_file: path where ca cert file lies on control machine
+- local_server_certs_path: path where server certs lies (directory)
+- local_peer_certs_path: path where peer certs  lies (directory)
 
 Dependencies
 ------------
@@ -28,33 +34,17 @@ Example Playbook
       roles:
         - ansible.role.etcd
       vars:
-        state: 'install'
-        version: '3.3.25'
-        local_ca_cert_file: "/where/to/get/ca-cert"
-        local_server_keys_path: '/where/to/get/server-keys/' - folder
-        local_client_keys_path: '/where/to/get/client-keys/' - folder
-        local_peer_keys_path: '/where/to/get/peer-keys/' - folder for every member
-        remote_certs_location: '/where/to/store/all/this/keys' - remote folder
-
-        name: example
-        data_dir: "/where/data/store"
-        wal_dir: "/where/wal-data/store'"
-        listen_peer_urls: which ip to listen for other peers(members) of cluster
-        listen_client_urls: which ip to listen for client control
-        initial_advertise_peer_urls: which ip will be visible for other cluster members
-        initial_cluster: list of all cluster member endpoints and their names( etcd=http://...:... )
-        initial_cluster_state: 'new' or 'existing'
-        initial_cluster_token: join token
-        advertise_client_urls: this ips will be visible by clients
-        client_cert_auth: true
-        cert_file: remote_certs_location
-        key_file: remote_certs_location 
-        trusted_ca_file: remote_certs_location
-        peer_client_cert_auth: true
-        peer_cert_file: remote_certs_location
-        peer_key_file: remote_certs_location
-        peer_trusted_ca_file: remote_certs_location
-        enable_v2: true - for flannel
+        state: install
+        version: 3.3.25
+        necessary_dirs:
+          - "/var/lib/etcd/data"
+          - "/var/lib/etcd/wal"
+        set_v3: true
+        service_file: "./services/file.service"
+        remote_certs_dir: "/path/where/store/certs"
+        local_ca_cert_file: "/path/where/ca.pem"
+        local_server_certs_dir: "/path/where/server"
+        local_peer_certs_dir: "/path/where/peer"
 
 License
 -------

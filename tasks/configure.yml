@@ -28,8 +28,8 @@
     dest: "{{ remote_certs_dir }}"
   loop:
     - "{{ local_ca_cert_file }}"
-    - "{{ local_server_certs_dir }}"
-    - "{{ local_peer_certs_dir }}"
+    - "{{ local_server_certs_path }}"
+    - "{{ local_peer_certs_path }}"
   when: remote_certs_dir
 
 - name: setting up etcd_3 client as default
