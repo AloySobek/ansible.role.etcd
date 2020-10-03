@@ -1,7 +1,7 @@
 # File              : configure.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 10.09.2020
-# Last Modified Date: 03.10.2020
+# Last Modified Date: 04.10.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
@@ -19,24 +19,24 @@
   file:
     path: "{{ remote_certs_dir }}"
     state: directory
-  when: remote_certs_dir
+  when: remote_certs_path
 
 - name: installing certificates
   become: true
   copy:
     src: "{{ item }}"
-    dest: "{{ remote_certs_dir }}"
+    dest: "{{ remote_certs_path }}"
   loop:
     - "{{ local_ca_cert_file }}"
     - "{{ local_server_certs_path }}"
     - "{{ local_peer_certs_path }}"
-  when: remote_certs_dir
+  when: remote_certs_path
 
 - name: setting up etcd_3 client as default
   become: true
   lineinfile:
     path: "/etc/environment"
-    line: "export ETCDCTL_API=3"
+    line: "ETCDCTL_API=3"
   when: set_v3
 
 - name: installing etcd.service

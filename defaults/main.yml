@@ -12,7 +12,7 @@ necessary_dirs:
   - /var/lib/etcd/wal
 set_v3: true
 service_file: false
-remote_certs_dir: false
+remote_certs_path: false
 local_ca_cert_file: false
 local_server_certs_path: false
 local_peer_certs_path: false
