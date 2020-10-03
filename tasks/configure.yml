@@ -1,55 +1,51 @@
 # File              : configure.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 10.09.2020
-# Last Modified Date: 26.09.2020
+# Last Modified Date: 03.10.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
-- name: ensuring data directory exists
+- name: creating necessary directories
   become: true
   file:
-    path: "{{ data_dir }}"
+    path: "{{ item }}"
     state: directory
     owner: root
     mode: 0644
-
-- name: ensuring wal directory exists
-  become: true
-  file:
-    path: "{{ wal_dir }}"
-    state: directory
-    owner: root
-    mode: 0644
+  loop: "{{ necessary_dirs }}"
 
 - name: ensuring certificates directory exists
   become: true
   file:
-    path: "{{ remote_certs_location }}"
+    path: "{{ remote_certs_dir }}"
     state: directory
+  when: remote_certs_dir
 
 - name: installing certificates
   become: true
   copy:
     src: "{{ item }}"
-    dest: "{{ remote_certs_location }}"
+    dest: "{{ remote_certs_dir }}"
   loop:
     - "{{ local_ca_cert_file }}"
-    - "{{ local_client_keys_path }}"
-    - "{{ local_server_keys_path }}"
-    - "{{ local_peer_keys_path }}"
+    - "{{ local_server_certs_dir }}"
+    - "{{ local_peer_certs_dir }}"
+  when: remote_certs_dir
 
 - name: setting up etcd_3 client as default
   become: true
   lineinfile:
     path: "/etc/environment"
     line: "export ETCDCTL_API=3"
+  when: set_v3
 
 - name: installing etcd.service
   become: true
   template:
-    src: etcd.service.j2
+    src: "{{ service_file }}"
     dest: "/etc/systemd/system/etcd.service"
     owner: root
     mode: 0644
   notify:
     - enable etcd
+  when: service_file

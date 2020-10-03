@@ -1,7 +1,7 @@
 # File              : uninstall.yml
 # Author            : Rustam Khafizov <super.rustamm@gmail.com>
 # Date              : 15.09.2020
-# Last Modified Date: 24.09.2020
+# Last Modified Date: 02.10.2020
 # Last Modified By  : Rustam Khafizov <super.rustamm@gmail.com>
 
 ---
@@ -21,19 +21,32 @@
     - etcd
     - etcdctl
 
-- name: removing data
+- name: removing created directories
   become: true
   file:
     path: "{{ item }}"
     state: absent
-  loop:
-    - "/var/lib/etcd"
-    - "/etc/etcd"
-    - "/etc/systemd/system/etcd.service"
+  loop: "{{ necessary_dirs }}"
   when: state == 'full_uninstall'
 
-- name: cleaning after uninstalling
+- name: removing certificates directory
   become: true
-  apt:
-    autoremove: true
-    autoclean: true
+  file:
+    path: "{{ remote_certs_dir }}"
+    state: absent
+  when: state == 'full_uninstall'
+
+- name: removing service
+  become: true
+  file:
+    path: "/etc/systemd/system/etcd.service"
+    state: absent
+  when: service_file
+
+- name: removing etcd_3 env var
+  become: true
+  lineinfile:
+    path: "/etc/environment"
+    line: "export ETCDCTL_API=3"
+    state: absent
+  when: set_v3
